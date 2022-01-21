@@ -1,8 +1,9 @@
 package com.peiart99.main;
 
 import com.peiart99.enums.NovelGenre;
+import com.peiart99.interfaces.ClassName;
 
-public class Novel extends Book{
+public class Novel extends Book implements ClassName {
 
     private NovelGenre genre;
 
@@ -13,5 +14,10 @@ public class Novel extends Book{
 
     public NovelGenre getGenre() {
         return genre;
+    }
+
+    @Override
+    public String getClassName() {
+        return "Novel";
     }
 }

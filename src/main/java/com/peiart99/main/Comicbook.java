@@ -1,6 +1,8 @@
 package com.peiart99.main;
 
-public class Comicbook extends Book{
+import com.peiart99.interfaces.ClassName;
+
+public class Comicbook extends Book implements ClassName {
 
     private String illustrator;
 
@@ -11,5 +13,10 @@ public class Comicbook extends Book{
 
     public String getIllustrator() {
         return illustrator;
+    }
+
+    @Override
+    public String getClassName() {
+        return "Comicbook";
     }
 }

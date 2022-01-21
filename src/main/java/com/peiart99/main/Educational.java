@@ -1,8 +1,9 @@
 package com.peiart99.main;
 
 import com.peiart99.enums.Topic;
+import com.peiart99.interfaces.ClassName;
 
-public class Educational extends Book{
+public class Educational extends Book implements ClassName {
 
     private Topic topic;
 
@@ -13,5 +14,10 @@ public class Educational extends Book{
 
     public Topic getTopic() {
         return topic;
+    }
+
+    @Override
+    public String getClassName() {
+        return "Educational";
     }
 }

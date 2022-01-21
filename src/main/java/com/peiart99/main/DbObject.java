@@ -1,6 +1,8 @@
 package com.peiart99.main;
 
-public abstract class DbObject {
+import com.peiart99.interfaces.ClassName;
+
+public abstract class DbObject implements ClassName {
     private String name;
     private int ID;
     private static int ID_numerator = 0;
@@ -18,4 +20,8 @@ public abstract class DbObject {
         return name;
     }
 
+    @Override
+    public String getClassName() {
+        return "DbObject";
+    }
 }

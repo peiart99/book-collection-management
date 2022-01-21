@@ -2,10 +2,7 @@ package com.peiart99.controllers;
 
 import com.peiart99.enums.NovelGenre;
 import com.peiart99.enums.Topic;
-import com.peiart99.main.ApplicationStarter;
-import com.peiart99.main.Comicbook;
-import com.peiart99.main.Educational;
-import com.peiart99.main.Novel;
+import com.peiart99.main.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -31,7 +28,7 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class AddBookViewController implements Initializable {
+public class AddSeriesViewController implements Initializable {
 
     @FXML
     private TextField authorTextField;
@@ -59,6 +56,9 @@ public class AddBookViewController implements Initializable {
     private Text uniqueLabel;
 
     @FXML
+    private Text volumeLabel;
+
+    @FXML
     private Text warningText;
 
     @FXML
@@ -71,12 +71,14 @@ public class AddBookViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ObservableList<String> options = FXCollections.observableArrayList("Comicbook", "Novel", "Educational");
+        ObservableList<String> options = FXCollections.observableArrayList("Empty", "Comicbook", "Novel", "Educational");
         uniqueChoice.getItems().setAll(NovelGenre.values());
         uniqueChoice2.getItems().setAll(Topic.values());
         uniqueTextField.setVisible(false);
         uniqueChoice.setVisible(false);
         uniqueChoice2.setVisible(false);
+        volumeTextField.setVisible(false);
+        volumeLabel.setText("");
         typeChoiceList.setItems(options);
         volumeTextField.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -91,14 +93,26 @@ public class AddBookViewController implements Initializable {
     public void onChoice(MouseEvent event) {
         String choice = typeChoiceList.getSelectionModel().getSelectedItem();
         switch (choice) {
+            case "Empty" -> {
+                uniqueChoice.setVisible(false);
+                uniqueChoice2.setVisible(false);
+                uniqueTextField.setVisible(false);
+                uniqueLabel.setText("");
+                volumeTextField.setVisible(false);
+                volumeLabel.setText("");
+            }
             case "Comicbook" -> {
                 uniqueChoice.setVisible(false);
                 uniqueChoice2.setVisible(false);
+                volumeTextField.setVisible(true);
+                volumeLabel.setText("Volumes:");
                 uniqueTextField.clear();
                 uniqueTextField.setVisible(true);
                 uniqueLabel.setText("Illustrator:");
             }
             case "Novel", "Educational" -> {
+                volumeTextField.setVisible(true);
+                volumeLabel.setText("Volumes:");
                 if (choice.equals("Novel")) {
                     uniqueChoice.setVisible(true);
                     uniqueChoice.setValue(NovelGenre.Adventure);
@@ -116,8 +130,10 @@ public class AddBookViewController implements Initializable {
     }
 
     public void onSubmit(ActionEvent event) throws IOException {
-        int volume;
-        volume = Objects.equals(volumeTextField.getText(), "") ? 1 : Integer.parseInt(volumeTextField.getText());
+        int volumes;
+        int i;
+        Series newSeries = new Series(titleTextField.getText());
+        volumes = Objects.equals(volumeTextField.getText(), "") ? 1 : Integer.parseInt(volumeTextField.getText());
 
         if(Objects.equals(typeChoiceList.getSelectionModel().getSelectedItem(), null)) {
             warningText.setText("You must choose a book type!");
@@ -128,23 +144,30 @@ public class AddBookViewController implements Initializable {
             String choice = typeChoiceList.getSelectionModel().getSelectedItem();
             switch(choice)
             {
+                case "Empty" -> {
+                }
                 case "Comicbook" -> {
-                    Comicbook newComicbook = new Comicbook(titleTextField.getText(), authorTextField.getText(), uniqueTextField.getText(), publisherTextField.getText(), volume);
-                    ApplicationStarter.addToCollection(newComicbook);
-                    goBack(event);
+                    for(i = 0; i < volumes; i++) {
+                        Comicbook newComicbook = new Comicbook(titleTextField.getText(), authorTextField.getText(), uniqueTextField.getText(), publisherTextField.getText(), i + 1);
+                        newSeries.addVolume(newComicbook);
+                    }
                 }
                 case "Novel" -> {
-                    Novel newNovel = new Novel(titleTextField.getText(), authorTextField.getText(), publisherTextField.getText(), volume,uniqueChoice.getValue());
-                    ApplicationStarter.addToCollection(newNovel);
-                    goBack(event);
+                    for(i = 0; i < volumes; i++) {
+                        Novel newNovel = new Novel(titleTextField.getText(), authorTextField.getText(), publisherTextField.getText(), i + 1, uniqueChoice.getValue());
+                        newSeries.addVolume(newNovel);
+                    }
                 }
                 case "Educational" -> {
-                    Educational newEducational = new Educational(titleTextField.getText(), authorTextField.getText(), publisherTextField.getText(), volume,uniqueChoice2.getValue());
-                    ApplicationStarter.addToCollection(newEducational);
-                    System.out.println(newEducational.getTopic());
-                    goBack(event);
+                    for(i = 0; i < volumes; i++) {
+                        Educational newEducational = new Educational(titleTextField.getText(), authorTextField.getText(), publisherTextField.getText(), i + 1, uniqueChoice2.getValue());
+                        newSeries.addVolume(newEducational);
+                    }
                 }
             }
+
+            ApplicationStarter.getCurrentCollection().addBook(newSeries);
+            goBack(event);
         }
     }
 
