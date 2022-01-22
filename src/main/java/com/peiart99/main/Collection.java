@@ -1,8 +1,10 @@
 package com.peiart99.main;
 
+import com.peiart99.interfaces.DeleteObject;
+
 import java.util.ArrayList;
 
-public class Collection extends DbObject{
+public class Collection extends DbObject implements DeleteObject {
     private ArrayList<DbObject> collection;
     private int collectionSize;
 
@@ -27,5 +29,14 @@ public class Collection extends DbObject{
         }else {
             this.collectionSize++;
         }
+    }
+
+    public void setCollectionSize(int collectionSize) {
+        this.collectionSize = collectionSize;
+    }
+
+    @Override
+    public void deleteObject(int ID) {
+        this.collection.removeIf(object -> object.getID() == ID);
     }
 }

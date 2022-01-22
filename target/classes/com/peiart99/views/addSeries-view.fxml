@@ -30,7 +30,7 @@
                 <TextField fx:id="titleTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <TextField fx:id="authorTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <TextField fx:id="publisherTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <TextField fx:id="volumeTextField" promptText="Adds an empty series if not filled" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <TextField fx:id="volumeTextField" promptText="Adds 1 volume if not filled" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                 <TextField fx:id="uniqueTextField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                 <ChoiceBox fx:id="uniqueChoice2" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                 <ChoiceBox fx:id="uniqueChoice" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />

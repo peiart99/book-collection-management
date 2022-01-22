@@ -1,10 +1,11 @@
 package com.peiart99.main;
 
 import com.peiart99.interfaces.ClassName;
+import com.peiart99.interfaces.DeleteObject;
 
 import java.util.ArrayList;
 
-public class Series extends DbObject implements ClassName {
+public class Series extends DbObject implements ClassName, DeleteObject {
 
     private int volumes;
     private ArrayList<Book> books;
@@ -36,8 +37,18 @@ public class Series extends DbObject implements ClassName {
         return volumes;
     }
 
+    public void setVolumes(int volumes) {
+        this.volumes = volumes;
+    }
+
     @Override
     public String getClassName() {
         return "Series";
+    }
+
+    @Override
+    public void deleteObject(int ID) {
+        this.books.removeIf(object -> object.getID() == ID);
+        this.volumes--;
     }
 }
